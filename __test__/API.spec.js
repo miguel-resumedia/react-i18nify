@@ -68,12 +68,14 @@ describe('API', () => {
           application: {
             empty: '',
             hello: 'Hello, %{name}!',
+            hello_with_link: 'Hello %{link}%{name}%{/link}!',
           },
         },
         nl: {
           application: {
             empty: '',
             hello: 'Hallo, %{name}!',
+            hello_with_link: 'Hallo %{link}%{name}%{/link}!',
           },
         },
       });
@@ -97,10 +99,10 @@ describe('API', () => {
 
       test('should handle nested dynamic placeholder', () => {
         const result1 = translateFunction('application', { name: 'Aad' });
-        expect(result1).toEqual({ empty: '', hello: 'Hello, Aad!' });
+        expect(result1).toEqual({ empty: '', hello: 'Hello, Aad!', hello_with_link: 'Hello %{link}Aad%{/link}!' });
 
         const result2 = translateFunction('application', { name: 'Piet' });
-        expect(result2).toEqual({ empty: '', hello: 'Hello, Piet!' });
+        expect(result2).toEqual({ empty: '', hello: 'Hello, Piet!', hello_with_link: 'Hello %{link}Piet%{/link}!' });
       });
 
       test('should handle empty translation', () => {
@@ -111,6 +113,15 @@ describe('API', () => {
       test('should support providing locale', () => {
         const result1 = translateFunction('application.hello', { name: 'Aad' }, { locale: 'nl' });
         expect(result1).toEqual('Hallo, Aad!');
+      });
+
+      test('should support wrapper functions with nested replacements', () => {
+        const result = translateFunction('application.hello_with_link', {
+          link: (children) => `<a href="/profile">${children}</a>`,
+          name: 'Aad',
+        });
+
+        expect(result).toEqual('Hello <a href="/profile">Aad</a>!');
       });
     });
   });
