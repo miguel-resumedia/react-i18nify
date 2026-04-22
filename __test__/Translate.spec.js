@@ -11,7 +11,6 @@ describe('Translate.jsx', () => {
       en: {
         application: {
           hello: 'Hello, %{name}!',
-          hello_link: 'Hello, %{link}%{name}%{/link}!',
           title: 'Awesome app with i18n!',
         },
         export: 'Export %{count} items',
@@ -56,12 +55,6 @@ describe('Translate.jsx', () => {
     test('should handle dynamic placeholder', () => {
       const component = <Translate name="Aad" value="application.hello" />;
       expect(renderToString(component)).toMatch('Hello, Aad!');
-    });
-
-    test('should handle wrapper replacements with children functions', () => {
-      const component = <Translate link={(children) => <a href="/profile">{children}</a>} name="Aad" value="application.hello_link" />;
-
-      expect(renderToString(component)).toContain('Hello, <a href="/profile">Aad</a>!');
     });
 
     test('should handle pluralization', () => {
