@@ -32,7 +32,9 @@ export class Localize extends React.Component<LocalizeDateProps | LocalizeNumber
 export type Translations = Record<string, any>;
 // The `count` key has some special behavior, so we need to support number. See src/lib/utils.js#L36
 // The value gets piped into `Array.join`, so the number will get coerced to a string. Should be ok.
-export type Replacements = Record<string, string | number>;
+export type WrapperReplacement = (children: string | React.ReactElement) => string;
+export type ReplacementValue = string | number | React.ReactElement | WrapperReplacement;
+export type Replacements = Record<string, ReplacementValue>;
 
 export type TranslationsGetter = () => Translations;
 export function getTranslations(): Translations | undefined;

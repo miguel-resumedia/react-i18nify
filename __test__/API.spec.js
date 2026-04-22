@@ -74,6 +74,7 @@ describe('API', () => {
           application: {
             empty: '',
             hello: 'Hallo, %{name}!',
+            hello_with_link: 'Hello %{link}%{name}%{/link}!',
           },
         },
       });
@@ -111,6 +112,15 @@ describe('API', () => {
       test('should support providing locale', () => {
         const result1 = translateFunction('application.hello', { name: 'Aad' }, { locale: 'nl' });
         expect(result1).toEqual('Hallo, Aad!');
+      });
+
+      test('should support wrapper functions with nested replacements', () => {
+        const result = translateFunction('Hello %{link}%{name}%{/link}!', {
+          link: (children) => <a href="/profile">{children}</a>,
+          name: 'Aad',
+        });
+
+        expect(renderToString(<>{result}</>)).toContain('Hello <a href="/profile">Aad</a>!');
       });
     });
   });

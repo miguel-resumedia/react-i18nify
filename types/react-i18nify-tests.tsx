@@ -83,4 +83,5 @@ t('foo.bar', { asdf: true }); // $ExpectError
 <Translate value="foo.bar" />;
 <Translate value="foo.bar" asdf="baz" />;
 <Translate value="foo.bar" count={1234} />;
+<Translate value="foo.bar" link={(children) => <a>{children}</a>} />;
 <Translate value="foo.bar" asdf={true} />; // $ExpectError
